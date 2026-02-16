@@ -11,11 +11,21 @@ public class ApplePicker : MonoBehaviour
     public float    basketBottomY = -14f;
     public float    basketSpacingY = -2f;
     public List<GameObject> basketList;
+    public RoundCounter roundCounter;
     
     // Start is called before the first frame update
     void Start()
     {
+
         basketList = new List<GameObject>();
+
+        // round counter 
+        // find the roundcounter gameobject in the scene hierarchy
+        GameObject roundGO = GameObject.Find("RoundCounter");
+        // Get the roundcounter script component of roundGO
+        roundCounter = roundGO.GetComponent<RoundCounter>();
+        roundCounter.round = numBaskets - (numBaskets-1);   
+
         for (int i=0; i <numBaskets; i++)
         {
             GameObject tBasketGO = Instantiate<GameObject>(basketPrefab);
@@ -43,6 +53,7 @@ public class ApplePicker : MonoBehaviour
         // remove basket from the list and destroy the gameobject
         basketList.RemoveAt(basketIndex);
         Destroy(basketGO);
+        roundCounter.round += 1;
 
         // if no more baskets left, restart the game
         if (basketList.Count == 0)
