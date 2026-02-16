@@ -10,6 +10,12 @@ public class AppleTree : MonoBehaviour
     // Prefab for instantiating apples
     public GameObject   applePrefab;
 
+    // instantiate a branch
+    public GameObject   branchPrefab;
+
+    // chance that the AppleTree will drop a branch instead of an apple
+    public float    dropBranchChance = 0.16f;
+
     // Speed at which the AppleTree moves
     public float    speed = 1f;
 
@@ -32,11 +38,17 @@ public class AppleTree : MonoBehaviour
 
     void DropApple()
     {
-        GameObject apple = Instantiate<GameObject>(applePrefab);
-        apple.transform.position = transform.position;
+        if (Random.value < dropBranchChance)
+        {
+            GameObject branch = Instantiate<GameObject>(branchPrefab);
+            branch.transform.position = transform.position;   
+        }
+        else
+        {
+            GameObject apple = Instantiate<GameObject>(applePrefab);
+            apple.transform.position = transform.position; 
+        }
         Invoke("DropApple", appleDropDelay);
-
-
     }
 
     // Update is called once per frame
